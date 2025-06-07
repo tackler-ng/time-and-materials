@@ -1,3 +1,12 @@
+= Example journey and reports for T&M Accounting
+
+There are fixed `--input.git.ref` in some of the commands below. 
+These are acting as "time machine", so that you would see 
+the journal as it would have been at the time of the command in real life.
+
+
+== Generic Reporting
+
 [source,bash]
 .All T&M work done, all clients
 ----
@@ -87,6 +96,9 @@ Balance Report
                540.00 €
 ----
 
+
+== Invoice Generating
+
 [source,bash]
 .Invoice transaction for Acme
 ----
@@ -137,6 +149,8 @@ tackler \
 ----
 
 The output needs some hand editing for actual invoice transactions
+
+== Invoice related reporting
 
 [source,bash]
 .Register listing of all invoices
@@ -260,6 +274,9 @@ Balance Report
 =======================
                540.00 €
 ----
+
+
+== Payment Status reporting
 
 [source,bash]
 .Payment status for Acme 
