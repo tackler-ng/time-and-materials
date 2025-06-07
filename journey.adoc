@@ -1,0 +1,301 @@
+[source,bash]
+.All T&M work done, all clients
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --input.git.ref 6efec716b \
+   --reports balance \
+   --accounts 'Client:.*:.*'
+----
+
+----
+Balance Report
+--------------
+                 0.00         -10.00 h·Jr  Client:Acme:T-M
+               -10.00         -10.00 h·Jr  Client:Acme:T-M:Time
+                 0.00          -1.00 h·Sr  Client:Acme:T-M
+                -1.00          -1.00 h·Sr  Client:Acme:T-M:Time
+                 0.00          -7.00 h·Sr  Client:Initech:T-M
+                -7.00          -7.00 h·Sr  Client:Initech:T-M:Time
+                 0.00        -200.00 €     Client:Initech:T-M
+                 0.00        -200.00 €     Client:Initech:T-M:Material
+              -200.00        -200.00 €     Client:Initech:T-M:Material:Travel
+==========================
+               -10.00 h·Jr
+                -8.00 h·Sr
+              -200.00 €
+----
+
+[source,bash]
+.All T&M work done, Initech only
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --input.git.ref 6efec716b \
+   --reports balance \
+   --accounts 'Client:Initech:.*'
+----
+
+
+[source,bash]
+.Billing for 2025-01, All clients
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --input.git.ref 6d362f0c \
+   --reports balance \
+   --accounts 'Billing:.*:.*' \
+   --api-filter-def $(sh bin/filters/bill.sh '.*' 2025-01-01 2025-02-01)
+----
+
+----
+Balance Report
+--------------
+                 0.00          -7.00 h·Sr  Client:Initech:T-M
+                -7.00          -7.00 h·Sr  Client:Initech:T-M:Time
+                 0.00        -200.00 €     Client:Initech:T-M
+                 0.00        -200.00 €     Client:Initech:T-M:Material
+              -200.00        -200.00 €     Client:Initech:T-M:Material:Travel
+==========================
+                -7.00 h·Sr
+              -200.00 €
+----
+
+There is already txn for Acme (2025-02-02) but it's filtered away by time bound.
+
+[source,bash]
+.Billing situation 2025-01 for Acme
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --input.git.ref 6d362f0c \
+   --reports balance \
+   --accounts 'Billing:.*:.*' \
+   --api-filter-def $(sh bin/filters/bill.sh 'Acme' 2025-01-01 2025-02-01)
+----
+
+----
+Balance Report
+--------------
+                 0.00      540.00 €  Billing:Acme:T-M
+               540.00      540.00 €  Billing:Acme:T-M:Time
+=======================
+               540.00 €
+----
+
+[source,bash]
+.Billing statement for Acme
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --exports equity \
+   --accounts "Billing:.*" \
+   --api-filter-def $(sh bin/filters/bill.sh 'Acme' 2025-01-01 2025-02-01) \
+   --output.dir tmp \
+   --output.prefix acme-2025-01
+----
+
+[source,bash]
+.Billing statement for Initech
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --exports equity \
+   --accounts "Billing:.*" \
+   --api-filter-def $(sh bin/filters/bill.sh 'Initech' 2025-01-01 2025-02-01) \
+   --output.dir tmp \
+   --output.prefix initech-2025-01
+----
+
+[source,bash]
+.Register listing of all invoices
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --input.git.ref be36670 \
+   --reports register \
+   --accounts 'Invoices:.*'
+----
+
+----
+Register Report
+---------------
+2025-02-02 (acme:2025-01) 'Acme: Invoice 2025-01
+            # uuid: b764c898-aeeb-4a53-9c6d-202a06e3bdac
+            ; last txn (uuid) : 6a802f2a-2588-4e45-b30d-527d08bd293d
+            ; Git Storage
+            ;       reference : main
+            ;       directory : txns
+            ;       extension : txn
+            ;          commit : 6d362f0c5c48da6ff9e49848a39282cc2e7bc785
+            ;          author : tackler <accounting@example.com>
+            ;            date : 2025-02-01 12:00:00 +0000
+            ;         subject : Acme: task-2
+            ;
+            ; Txn Set Checksum
+            ;         SHA-256 : e10c5732313333c9f31b8960589f2dfb35cdf477c8fa3f10287375d70f59ef20
+            ;        set size : 3
+            ;
+            ; Filter
+            ;   AND
+            ;     Txn TS: begin 2025-01-01T00:00:00+00:00
+            ;     Txn TS: end   2025-02-01T00:00:00+00:00
+            ;     Posting Amount
+            ;       account: "Billing:Acme:.*"
+            ;       amount > 0
+            ;     Posting Amount
+            ;       account: "Client:Acme:.*"
+            ;       amount < 0
+            ;
+            ; Account Selector Checksum
+            ;         SHA-256 : 7e7dd8ef1e4292416ffe27d9c42cf3c6f218cfe63cc12d1ec3546ca838d1cfda
+            ;        selector : 'Billing:.*'
+            ;
+            Invoices:Acme                                540.00             540.00 €
+------------------------------------------------------------------------------------
+2025-02-04 (initech:2025-01) 'Initech: Invoice 2025-01
+            # uuid: f6dd8183-fb03-4bcc-bca4-86b3ab08e94d
+            ; last txn (uuid) : a2d75bba-07cf-46c3-b90d-08a7c2b33688
+            ; Git Storage
+            ;       reference : main
+            ;       directory : txns
+            ;       extension : txn
+            ;          commit : 8dd9c1e52896fb800e52726e83fa9f7b9b6a2b41
+            ;          author : tackler <accounting@example.com>
+            ;            date : 2025-02-02 12:00:00 +0000
+            ;         subject : Acme: invoice 2025-01
+            ;
+            ; Txn Set Checksum
+            ;         SHA-256 : 5dd268e6d597746b80f1002782eb68bf783705304816b6056606a9d335d184f2
+            ;        set size : 2
+            ;
+            ; Filter
+            ;   AND
+            ;     Txn TS: begin 2025-01-01T00:00:00+00:00
+            ;     Txn TS: end   2025-02-01T00:00:00+00:00
+            ;     Posting Amount
+            ;       account: "Billing:Initech:.*"
+            ;       amount > 0
+            ;     Posting Amount
+            ;       account: "Client:Initech:.*"
+            ;       amount < 0
+            ;
+            ; Account Selector Checksum
+            ;         SHA-256 : 7e7dd8ef1e4292416ffe27d9c42cf3c6f218cfe63cc12d1ec3546ca838d1cfda
+            ;        selector : 'Billing:.*'
+            ;
+            Invoices:Initech                            1040.00            1040.00 €
+------------------------------------------------------------------------------------
+----
+
+[source,bash]
+.Value of outstanding (unpaid) invoices
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --input.git.ref be36670 \
+   --reports balance \
+   --accounts 'Invoices:.*' 'Payments:.*'
+----
+
+----
+Balance Report
+--------------
+               540.00       540.00 €  Invoices:Acme
+              1040.00      1040.00 €  Invoices:Initech
+=======================
+              1580.00 €
+----
+
+[source,bash]
+.Initech paid, Acme did not
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --input.git.ref 515280 \
+   --reports balance --accounts 'Invoices:.*' 'Payments:.*'
+----
+
+----
+Balance Report
+--------------
+               540.00       540.00 €  Invoices:Acme
+              1040.00      1040.00 €  Invoices:Initech
+             -1040.00     -1040.00 €  Payments:Initech
+=======================
+               540.00 €
+----
+
+[source,bash]
+.Payment status for Acme 
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --input.git.ref 515280 \
+   --reports balance \
+   --accounts 'Invoices:Acme' 'Payments:Acme'
+----
+
+----
+Balance Report
+--------------
+               540.00      540.00 €  Invoices:Acme
+=======================
+               540.00 €
+----
+
+[source,bash]
+.Billing situation for Acme at some point in Feb
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --reports balance \
+   --accounts 'Billing:.*' \
+   --api-filter-def $(sh bin/filters/bill.sh 'Acme' 2025-02-01 2025-03-01)
+----
+
+----
+Balance Report
+--------------
+                 0.00      150.00 €  Billing:Acme
+                 0.00      150.00 €  Billing:Acme:T-M
+               150.00      150.00 €  Billing:Acme:T-M:Time
+=======================
+               150.00 €
+----
+
+[source,bash]
+.Unbound (all clients, begin of journal) billing statement
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --reports balance \
+   --accounts 'Billing:.*'
+----
+
+----
+Balance Report
+--------------
+                 0.00      150.00 €  Billing:Acme
+                 0.00      150.00 €  Billing:Acme:T-M
+               150.00      150.00 €  Billing:Acme:T-M:Time
+                 0.00        0.00 €  Billing:Initech
+                 0.00        0.00 €  Billing:Initech:T-M
+                 0.00        0.00 €  Billing:Initech:T-M:Material
+                 0.00        0.00 €  Billing:Initech:T-M:Time
+=======================
+               150.00 €
+----
+
