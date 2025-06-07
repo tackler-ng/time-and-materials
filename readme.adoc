@@ -1,0 +1,14 @@
+= Time and Materials Accounting example
+
+Accounting journey is described in the separate doc link:./journey.adoc[journey]
+with example outputs.
+
+If you like to run the examples by yourself, clone the tm-journal:
+
+----
+git clone https://github.com/tackler-ng/time-and-materials
+cd time-and-materials
+git clone https://github.com/tackler-ng/tm-journal journal
+----
+
+And then run the commands in the link:./journey.adoc[journey].

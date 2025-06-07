@@ -88,7 +88,7 @@ Balance Report
 ----
 
 [source,bash]
-.Billing statement for Acme
+.Invoice transaction for Acme
 ----
 tackler \
    --config journal/conf/tackler.toml \
@@ -100,8 +100,31 @@ tackler \
    --output.prefix acme-2025-01
 ----
 
+The output needs some hand editing for actual invoice transactions
+
 [source,bash]
 .Billing statement for Initech
+----
+tackler \
+   --config journal/conf/tackler.toml  \
+   --reports balance \
+   --accounts "Billing:.*" \
+   --api-filter-def $(sh bin/filters/bill.sh 'Initech' 2025-01-01 2025-02-01)
+----
+
+----
+Balance Report
+--------------
+                 0.00      1040.00 €  Billing:Initech
+                 0.00      1040.00 €  Billing:Initech:T-M
+               200.00       200.00 €  Billing:Initech:T-M:Material
+               840.00       840.00 €  Billing:Initech:T-M:Time
+=======================
+              1040.00 €
+----
+
+[source,bash]
+.Invoice statement (transaction) for Initech
 ----
 tackler \
    --config journal/conf/tackler.toml \
@@ -123,6 +146,8 @@ tackler \
    --reports register \
    --accounts 'Invoices:.*'
 ----
+
+The output needs some hand editing for actual invoice transactions
 
 ----
 Register Report
@@ -299,3 +324,21 @@ Balance Report
                150.00 €
 ----
 
+
+[source,bash]
+.Available Cash after all payments have arrived
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --reports balance \
+   --accounts 'Assets:.*'
+----
+
+----
+Balance Report
+--------------
+              1580.00      1580.00 €  Assets:Cash
+=======================
+              1580.00 €
+----
