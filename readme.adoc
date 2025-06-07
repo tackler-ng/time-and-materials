@@ -3,7 +3,11 @@
 Accounting journey is described in the separate doc link:./journey.adoc[journey]
 with example outputs.
 
-If you like to run the examples by yourself, clone the tm-journal:
+
+The actual journal data is in separate repository: https://github.com/tackler-ng/tm-journal
+
+If you like to run the examples by yourself,
+clone this and the tm-journal following way:
 
 ----
 git clone https://github.com/tackler-ng/time-and-materials
