@@ -136,6 +136,8 @@ tackler \
    --output.prefix initech-2025-01
 ----
 
+The output needs some hand editing for actual invoice transactions
+
 [source,bash]
 .Register listing of all invoices
 ----
@@ -147,7 +149,6 @@ tackler \
    --accounts 'Invoices:.*'
 ----
 
-The output needs some hand editing for actual invoice transactions
 
 ----
 Register Report
