@@ -20,10 +20,10 @@ tackler \
    --config journal/conf/tackler.toml \
    --input.storage git \
    --api-filter-def $(sh bin/filters/time.sh 2025-01-01 2025-02-01) \
-   --reports balance \
    --accounts 'Client:.*:.*' \
-   --invert \
-   --price.lookup-type txn-time
+   --price.lookup-type txn-time \
+   --reports balance \
+   --invert
 ----
 
 
@@ -32,14 +32,37 @@ tackler \
 === Invoices for Acme, Jan 2025
 
 [source,bash]
+.Billing summary of Jan 2025 for Acme (T&M)
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --api-filter-def $(sh bin/filters/billing.sh Acme 2025-01-01 2025-02-01) \
+   --accounts 'Billing:Acme:.*' \
+   --reports balance
+----
+
+[source,bash]
+.Billing summary of Jan 2025 for Acme (Euros)
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --api-filter-def $(sh bin/filters/billing.sh Acme 2025-01-01 2025-02-01) \
+   --accounts 'Billing:Acme:.*' \
+   --price.lookup-type txn-time \
+   --reports balance
+----
+
+[source,bash]
 .Billing txn of Jan 2025 for Acme
 ----
 tackler \
    --config journal/conf/tackler.toml \
    --input.storage git \
-   --price.lookup-type txn-time \
    --api-filter-def $(sh bin/filters/billing.sh Acme 2025-01-01 2025-02-01) \
    --accounts 'Billing:Acme:.*' \
+   --price.lookup-type txn-time \
    --exports equity \
    --invert \
    --output.dir tmp \
@@ -52,13 +75,36 @@ tackler \
 tackler \
    --config journal/conf/tackler.toml \
    --input.storage git \
-   --price.lookup-type txn-time \
    --api-filter-def $(sh bin/filters/billing.sh Acme 2025-01-01 2025-02-01) \
    --accounts 'Billing:Acme:.*' \
+   --price.lookup-type txn-time \
    --reports register
 ----
 
 === Invoices for Initech, Jan 2025
+
+[source,bash]
+.Billing summary of Jan 2025 for Initech (T&M)
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --api-filter-def $(sh bin/filters/billing.sh Initech 2025-01-01 2025-02-01) \
+   --accounts 'Billing:Initech:.*' \
+   --reports balance
+----
+
+[source,bash]
+.Billing summary of Jan 2025 for Initech (Euros)
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --api-filter-def $(sh bin/filters/billing.sh Initech 2025-01-01 2025-02-01) \
+   --accounts 'Billing:Initech:.*' \
+   --price.lookup-type txn-time \
+   --reports balance
+----
 
 [source,bash]
 .Billing txn of Jan 2025 for Initech
@@ -66,9 +112,9 @@ tackler \
 tackler \
    --config journal/conf/tackler.toml \
    --input.storage git \
-   --price.lookup-type txn-time \
    --api-filter-def $(sh bin/filters/billing.sh Initech 2025-01-01 2025-02-01) \
    --accounts 'Billing:Initech:.*' \
+   --price.lookup-type txn-time \
    --exports equity \
    --invert \
    --output.dir tmp \
@@ -81,9 +127,9 @@ tackler \
 tackler \
    --config journal/conf/tackler.toml \
    --input.storage git \
-   --price.lookup-type txn-time \
    --api-filter-def $(sh bin/filters/billing.sh Initech 2025-01-01 2025-02-01) \
    --accounts 'Billing:Initech:.*' \
+   --price.lookup-type txn-time \
    --reports register
 ----
 
@@ -98,8 +144,8 @@ tackler \
    --config journal/conf/tackler.toml \
    --input.storage git \
    --input.git.ref 2025-02-04 \
-   --reports balance \
-   --accounts 'Invoices:.*' 'Payments:.*'
+   --accounts 'Invoices:.*' 'Payments:.*' \
+   --reports balance
 ----
 
 [source,bash]
@@ -109,8 +155,8 @@ tackler \
    --config journal/conf/tackler.toml \
    --input.storage git \
    --input.git.ref 2025-02-06 \
-   --reports balance \
-   --accounts 'Invoices:.*' 'Payments:.*'
+   --accounts 'Invoices:.*' 'Payments:.*' \
+   --reports balance
 ----
 
 [source,bash]
@@ -120,8 +166,8 @@ tackler \
    --config journal/conf/tackler.toml \
    --input.storage git \
    --input.git.ref 2025-02-08 \
-   --reports balance \
-   --accounts 'Invoices:.*' 'Payments:.*'
+   --accounts 'Invoices:.*' 'Payments:.*' \
+   --reports balance
 ----
 
 [source,bash]
@@ -130,7 +176,7 @@ tackler \
 tackler \
    --config journal/conf/tackler.toml \
    --input.storage git \
-   --reports register \
-   --accounts 'Invoices:.*' 'Payments:.*'
+   --accounts 'Invoices:.*' 'Payments:.*' \
+   --reports register
 ----
 
