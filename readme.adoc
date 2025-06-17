@@ -1,7 +1,9 @@
 = Time and Materials Accounting example
 
-Accounting journey is described in the separate doc link:./journey.adoc[journey]
-with example outputs.
+Accounting journeys are described in the separate documents with example outputs:
+
+* link:./journey-rates.adoc[journey for journal with rates].
+* link:./journey-fixed.adoc[journey for journal with fixed costs].
 
 
 The example journals are located in separate repositories: 
@@ -22,5 +24,6 @@ git clone https://github.com/tackler-ng/tm-fixed-journal journal
 ----
 
 And then run the commands in the 
- * link:./journey-rates.adoc[journey for journal with rates].
- * link:./journey-fixed.adoc[journey for journal with fixed costs].
+
+* link:./journey-rates.adoc[journey for journal with rates].
+* link:./journey-fixed.adoc[journey for journal with fixed costs].
