@@ -1,0 +1,136 @@
+
+== Client status (saldos) 
+
+[source,bash]
+.Client saldos (time and material) for Jan
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --api-filter-def $(sh bin/filters/time.sh 2025-01-01 2025-02-01) \
+   --reports balance \
+   --accounts 'Client:.*:.*' \
+   --invert
+----
+
+[source,bash]
+.Client saldos (in Euros) for Jan
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --api-filter-def $(sh bin/filters/time.sh 2025-01-01 2025-02-01) \
+   --reports balance \
+   --accounts 'Client:.*:.*' \
+   --invert \
+   --price.lookup-type txn-time
+----
+
+
+== Billing statements
+
+=== Invoices for Acme, Jan 2025
+
+[source,bash]
+.Billing txn of Jan 2025 for Acme
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --price.lookup-type txn-time \
+   --api-filter-def $(sh bin/filters/billing.sh Acme 2025-01-01 2025-02-01) \
+   --accounts 'Billing:Acme:.*' \
+   --exports equity \
+   --invert \
+   --output.dir tmp \
+   --output.prefix 2025-02-02-acme
+----
+
+[source,bash]
+.Invoice details of Jan 2025 for Acme
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --price.lookup-type txn-time \
+   --api-filter-def $(sh bin/filters/billing.sh Acme 2025-01-01 2025-02-01) \
+   --accounts 'Billing:Acme:.*' \
+   --reports register
+----
+
+=== Invoices for Initech, Jan 2025
+
+[source,bash]
+.Billing txn of Jan 2025 for Initech
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --price.lookup-type txn-time \
+   --api-filter-def $(sh bin/filters/billing.sh Initech 2025-01-01 2025-02-01) \
+   --accounts 'Billing:Initech:.*' \
+   --exports equity \
+   --invert \
+   --output.dir tmp \
+   --output.prefix 2025-02-04-initech
+----
+
+[source,bash]
+.Invoice details of Jan 2025 for Initech
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --price.lookup-type txn-time \
+   --api-filter-def $(sh bin/filters/billing.sh Initech 2025-01-01 2025-02-01) \
+   --accounts 'Billing:Initech:.*' \
+   --reports register
+----
+
+
+== Payments
+
+
+[source,bash]
+.Payments as 2025-02-04 (none has paid)
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --input.git.ref 2025-02-04 \
+   --reports balance \
+   --accounts 'Invoices:.*' 'Payments:.*'
+----
+
+[source,bash]
+.Payments as 2025-02-06 (Initech paid)
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --input.git.ref 2025-02-06 \
+   --reports balance \
+   --accounts 'Invoices:.*' 'Payments:.*'
+----
+
+[source,bash]
+.Payments as 2025-02-08 (Acme paid)
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --input.git.ref 2025-02-08 \
+   --reports balance \
+   --accounts 'Invoices:.*' 'Payments:.*'
+----
+
+[source,bash]
+.Register of invoices and payments
+----
+tackler \
+   --config journal/conf/tackler.toml \
+   --input.storage git \
+   --reports register \
+   --accounts 'Invoices:.*' 'Payments:.*'
+----
+

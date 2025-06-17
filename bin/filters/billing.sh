@@ -14,18 +14,15 @@ billing_filter () {
     "txnFilter" : {
         "TxnFilterAND" : {
             "txnFilters" : [
-                $(time_span_body $begin $end)
-                ,
+                $(time_span_body $begin $end),
                 {
-                    "TxnFilterPostingAmountGreater" : {
-			            "regex" : "Billing:$client:.*",
-			            "amount" : 0
+                    "TxnFilterPostingAccount" : {
+			            "regex" : "Billing:$client:.*"
                     }
                 },
                 {
-                    "TxnFilterPostingAmountLess" : {
-			            "regex" : "Client:$client:.*",
-			            "amount" : 0
+                    "TxnFilterPostingAccount" : {
+			            "regex" : "Client:$client:.*"
                     }
                 }
             ]
@@ -46,8 +43,8 @@ client=$1
 
 
 # convert date to timestamp with offset
-begin=$(date --utc --date="$2" --iso-8601=s)
-end=$(date --utc --date="$3" --iso-8601=s)
+begin=$(TZ=UTC date --utc --date="$2" --iso-8601=s)
+end=$(TZ=UTC date --utc --date="$3" --iso-8601=s)
 
 
 billing_filter "$client" $begin $end

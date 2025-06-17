@@ -4,15 +4,23 @@ Accounting journey is described in the separate doc link:./journey.adoc[journey]
 with example outputs.
 
 
-The actual journal data is in separate repository: https://github.com/tackler-ng/tm-journal
+The example journals are located in separate repositories: 
+ * Fixed rates (as cost statements in transactions)
+   ** https://github.com/tackler-ng/tm-fixed-journal
+ * Hourly rates with pricedb
+   ** https://github.com/tackler-ng/tm-rates-journal
 
 If you like to run the examples by yourself,
-clone this and the tm-journal following way:
+clone this and journal repository following way:
 
 ----
 git clone https://github.com/tackler-ng/time-and-materials
 cd time-and-materials
-git clone https://github.com/tackler-ng/tm-journal journal
+git clone https://github.com/tackler-ng/tm-rates-journal journal
+# or
+git clone https://github.com/tackler-ng/tm-fixed-journal journal
 ----
 
-And then run the commands in the link:./journey.adoc[journey].
+And then run the commands in the 
+ * link:./journey-rates.adoc[journey for journal with rates].
+ * link:./journey-fixed.adoc[journey for journal with fixed costs].

@@ -5,7 +5,7 @@
 #
 
 sh_date () {
-    date --utc "$@"
+    TZ=UTC date --utc "$@"
 }
 
 #
