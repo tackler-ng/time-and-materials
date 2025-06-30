@@ -9,8 +9,12 @@ cargo install --locked tackler
 ----
 
 [source,bash]
-.Get example journal:
+.Get setup and example journal:
 ----
+git clone https://github.com/tackler-ng/time-and-materials
+
+cd time-and-materials
+
 git clone https://github.com/tackler-ng/tm-rates-journal journal
 ----
 
