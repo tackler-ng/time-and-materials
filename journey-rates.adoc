@@ -1,3 +1,27 @@
+= Billing and Invoice example with variables rates
+
+== How to run these examples
+
+[source,bash]
+.Get link:https://github.com/tackler-ng/tackler[tackler]:
+----
+cargo install --locked tackler
+----
+
+[source,bash]
+.Get example journal:
+----
+git clone https://github.com/tackler-ng/tm-fixed-journal journal
+----
+
+After that you can run following examples on 
+Linux/MacOS assuming that you have GNU date installed.
+
+See link:https://tackler.fi/docs/tackler/latest/[Tackler Documentation] for detailed 
+information and additional link:https://tackler.fi/docs/tackler/latest/examples/[Examples].
+
+Tackler source code is located at 
+link:https://github.com/tackler-ng/tackler[tackler-ng/tackler] on GitHub.
 
 == Client status (saldos) 
 
