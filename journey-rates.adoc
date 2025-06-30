@@ -11,7 +11,7 @@ cargo install --locked tackler
 [source,bash]
 .Get example journal:
 ----
-git clone https://github.com/tackler-ng/tm-fixed-journal journal
+git clone https://github.com/tackler-ng/tm-rates-journal journal
 ----
 
 After that you can run following examples on 
